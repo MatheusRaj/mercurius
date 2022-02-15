@@ -1,5 +1,5 @@
 {
-  "name": "mercurius",
+  "name": "mercurius-chat",
   "version": "0.0.1",
   "description": "Micro service chat",
   "main": "./dist/index.js",
