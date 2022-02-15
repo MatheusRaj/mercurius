@@ -1,0 +1,39 @@
+{
+  "name": "mercurius",
+  "version": "0.0.1",
+  "description": "Micro service chat",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/typescript/bin/tsc",
+    "dev": "tsc && concurrently \"nodemon\" \"tsc -w --preserveWatchOutput\" ",
+    "prod": "yarn build",
+    "start": "node ./dist/index.js"
+  },
+  "author": "Matheus Mendes",
+  "license": "ISC",
+  "dependencies": {
+    "@eduzz/rabbit": "^0.2.0",
+    "@sentry/node": "5.24.2",
+    "axios": "0.18.0",
+    "cors": "^2.8.5",
+    "dotenv": "6.2.0",
+    "express": "4.16.4",
+    "rxjs": "^7.5.4",
+    "socket.io": "2.2.0",
+    "source-map-support": "0.5.11",
+    "tslib": "1.9.3"
+  },
+  "devDependencies": {
+    "@types/axios": "0.14.0",
+    "@types/cors": "2.8.4",
+    "@types/dotenv": "6.1.0",
+    "@types/express": "4.16.1",
+    "@types/lodash": "4.14.120",
+    "@types/socket.io": "2.1.2",
+    "concurrently": "4.1.0",
+    "nodemon": "1.18.10",
+    "ts-node": "8.0.2",
+    "typescript": "3.3.3"
+  }
+}

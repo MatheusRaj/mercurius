@@ -1,0 +1,25 @@
+version: '3'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./docker/dev/Dockerfile
+    ports:
+      - "3001:3001"
+    expose:
+      - 3001
+    links:
+      - mongo:mongo
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    expose:
+      - 27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_INITDB_DATABASE=mercurius
