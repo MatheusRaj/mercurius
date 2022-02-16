@@ -4,5 +4,8 @@ export interface ISend {
   from: IUser;
   room: unknown;
   data: unknown;
-  persistData?: boolean;
+  persistData?: {
+    connection: string;
+    topic: string;
+  };
 }

@@ -18,35 +18,44 @@ export const connection = (io: Server, listener: Function) => {
   });
 };
 
-export const join = (io: Server, callback: Function) =>
+export const join = (io: Server, callback?: Function) =>
   connection(io, socket => {
-    socket.on('join', async (payload: ISend) => {
+    socket.on('join', (payload: ISend) => {
       socket.join(String(payload.room));
 
       callback && callback(payload);
     });
   });
 
-export const typing = (io: Server, callback: Function) =>
+export const typing = (io: Server, callback?: Function) =>
   connection(io, socket => {
-    socket.on('typing', async (payload: ISend) => {
-      io.to(String(payload.room)).emit('typing', payload);
+    socket.on('typing', (payload: ISend) => {
+      socket.to(String(payload.room)).emit('typing', payload);
 
       callback && callback(payload);
     });
   });
 
-export const send = (io: Server, callback: Function) =>
+export const send = (io: Server, callback?: Function) =>
   connection(io, socket => {
-    socket.on('send', async (payload: ISend) => {
-      io.to(String(payload.room)).emit('receive', payload.data);
+    socket.on('send', (payload: ISend) => {
+      socket.to(String(payload.room)).emit('receive', payload.data);
 
       if (!!payload.persistData) {
-        persistData({ connection: '', topic: '', payload });
+        persistData({ ...payload.persistData, payload: payload.data });
       }
 
       callback && callback(payload);
     });
   });
 
-export default { connection, join, send };
+export const disconnect = (io: Server, callback?: Function) =>
+  connection(io, socket => {
+    socket.on('disconnect', (payload: ISend) => {
+      socket.to(String(payload.room)).emit('disconnect', payload);
+
+      callback && callback(payload);
+    });
+  });
+
+export default { connection, join, send, typing, disconnect };
