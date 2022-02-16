@@ -1,11 +1,11 @@
-import cors, { CorsOptions } from 'cors';
+import cors from 'cors';
 import express from 'express';
 
 import { router } from './router';
 
 const app = express();
 
-export const useCors = async (options: CorsOptions) => app.use(cors(options));
+app.use(cors());
 
 app.use('/', router);
 
