@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
     "target": "es2017",
+    "lib": [
+      "es2015"
+    ],
     "module": "commonjs",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
@@ -16,9 +19,16 @@
     "inlineSources": true,
     "noUnusedLocals": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "declaration": true,
   },
   "compileOnSave": false,
-  "include": ["src/**/*.ts"],
-  "exclude": ["dist", "node_modules", "node_modules_prod"]
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "node_modules_prod"
+  ]
 }
