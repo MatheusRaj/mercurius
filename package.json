@@ -19,6 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "@eduzz/rabbit": "^0.2.0",
+    "amqplib": "^0.7.0",
     "@sentry/node": "6.17.9",
     "axios": "0.26.0",
     "cors": "^2.8.5",
