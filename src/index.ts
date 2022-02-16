@@ -2,6 +2,7 @@ import 'source-map-support/register';
 
 import * as sentry from '@sentry/node';
 
+export { useCors } from './app';
 export * from './io';
 export * from './socket';
 
