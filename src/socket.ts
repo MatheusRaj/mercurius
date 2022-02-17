@@ -13,7 +13,7 @@ export const persistData = async params => {
 };
 
 export const connection = (io: Server, listener: Function) => {
-  io.on('connection', socket => {
+  return io.on('connection', socket => {
     console.log('CONNECTION');
     listener(socket);
   });
@@ -32,10 +32,10 @@ export const join = (io: Server, callback?: Function) =>
 
 export const typing = (io: Server, callback?: Function) =>
   connection(io, socket => {
-    console.log('listener do join');
+    console.log('listener do typing');
 
     socket.on('typing', (payload: ISend) => {
-      console.log('listener do join');
+      console.log('event do typing');
 
       socket.to(String(payload.room)).emit('typing', payload);
 
@@ -45,10 +45,10 @@ export const typing = (io: Server, callback?: Function) =>
 
 export const send = (io: Server, callback?: Function) =>
   connection(io, socket => {
-    console.log('listener do join');
+    console.log('listener do send');
 
     socket.on('send', (payload: ISend) => {
-      console.log('listener do join');
+      console.log('event do send');
       socket.to(String(payload.room)).emit('receive', payload.data);
 
       if (!!payload.persistData) {
