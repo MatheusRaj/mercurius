@@ -13,12 +13,14 @@ export const persistData = async params => {
 };
 
 export const connection = (io: Server, listener: Function) => {
+  console.log('Connection called');
+
   return io.on('connection', socket => {
     socket.on('connect_error', err => {
       console.log(`connect_error due to ${err.message}`);
     });
-
     console.log('CONNECTION');
+
     listener(socket);
   });
 };
