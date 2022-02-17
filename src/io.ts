@@ -12,7 +12,7 @@ export const initServer = async (port: number) => {
 };
 
 export const getSocket = (server: http.Server): Server => {
-  const io = new Server(server);
+  const io = new Server(server, { path: '/', cors: { origin: '*', credentials: false } });
 
   return io;
 };
