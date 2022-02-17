@@ -54,7 +54,7 @@ export const send = (io: Server, callback?: Function) =>
     console.log('listener do send');
 
     socket.on('send', (payload: ISend) => {
-      console.log('event do send');
+      console.log('event do send: ', JSON.stringify(payload));
       socket.to(String(payload.room)).emit('receive', payload);
 
       if (!!payload.persistData) {
