@@ -13,13 +13,10 @@ export const persistData = async params => {
 };
 
 export const connection = (io: Server, listener: Function) => {
-  console.log('Connection called');
-
   return io.on('connection', socket => {
     socket.on('connect_error', err => {
       console.log(`connect_error due to ${err.message}`);
     });
-    console.log('CONNECTION');
 
     listener(socket);
   });
@@ -27,9 +24,7 @@ export const connection = (io: Server, listener: Function) => {
 
 export const join = (io: Server, callback?: Function) =>
   connection(io, socket => {
-    console.log('listener do join');
     socket.on('join', (payload: ISend) => {
-      console.log('event do join');
       socket.join(String(payload.room));
 
       callback && callback(payload);
@@ -38,11 +33,7 @@ export const join = (io: Server, callback?: Function) =>
 
 export const typing = (io: Server, callback?: Function) =>
   connection(io, socket => {
-    console.log('listener do typing');
-
     socket.on('typing', (payload: ISend) => {
-      console.log('event do typing');
-
       socket.to(String(payload.room)).emit('typing', payload);
 
       callback && callback(payload);
@@ -51,10 +42,7 @@ export const typing = (io: Server, callback?: Function) =>
 
 export const send = (io: Server, callback?: Function) =>
   connection(io, socket => {
-    console.log('listener do send');
-
     socket.on('send', (payload: ISend) => {
-      console.log('event do send: ', JSON.stringify(payload));
       socket.to(String(payload.room)).emit('receive', payload);
 
       if (!!payload.persistData) {

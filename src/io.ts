@@ -8,6 +8,8 @@ export const httpServer = new http.Server(app);
 export const initServer = async (port: number) => {
   const server = await httpServer.listen({ port });
 
+  console.log('Server up and listening port: ', port);
+
   return server;
 };
 
