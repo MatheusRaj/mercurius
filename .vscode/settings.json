@@ -8,4 +8,5 @@
     "react",
     "settings"
   ],
+  "editor.tabSize": 2,
 }

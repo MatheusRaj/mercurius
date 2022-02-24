@@ -1,65 +1,18 @@
-import * as sentry from '@sentry/node';
-
-import { Server } from 'socket.io';
 import { ISend } from './interfaces/ISend';
-import { sendMessageToRabbit } from './rabbitmq';
+import { io } from './io';
 
-export const persistData = async params => {
-  try {
-    await sendMessageToRabbit(params);
-  } catch (error) {
-    sentry.captureException(error);
-  }
-};
-
-export const connection = (io: Server, listener: Function) => {
+export const dispatch = (event: string, callback: Function) => {
   return io.on('connection', socket => {
-    socket.on('connect_error', err => {
-      console.log(`connect_error due to ${err.message}`);
+    socket.on(event, (payload: ISend) => {
+      callback(io, payload);
     });
-
-    listener(socket);
   });
 };
 
-export const join = (io: Server, callback?: Function) =>
-  connection(io, socket => {
-    socket.on('join', (payload: ISend) => {
-      socket.join(String(payload.room));
+export const sendMessageToRabbit = ({ connection, topic, payload }) => {
+  const publisher = connection.topic(topic).persistent();
 
-      callback && callback(payload);
-    });
-  });
+  publisher.send(payload);
+};
 
-export const typing = (io: Server, callback?: Function) =>
-  connection(io, socket => {
-    socket.on('typing', (payload: ISend) => {
-      socket.to(String(payload.room)).emit('typing', payload);
-
-      callback && callback(payload);
-    });
-  });
-
-export const send = (io: Server, callback?: Function) =>
-  connection(io, socket => {
-    socket.on('send', (payload: ISend) => {
-      socket.to(String(payload.room)).emit('receive', payload);
-
-      if (!!payload.persistData) {
-        persistData({ ...payload.persistData, payload: payload.data });
-      }
-
-      callback && callback(payload);
-    });
-  });
-
-export const disconnect = (io: Server, callback?: Function) =>
-  connection(io, socket => {
-    socket.on('disconnect', (payload: ISend) => {
-      socket.to(String(payload.room)).emit('disconnect', payload);
-
-      callback && callback(payload);
-    });
-  });
-
-export default { connection, join, send, typing, disconnect };
+export default { dispatch, sendMessageToRabbit };
