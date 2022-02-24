@@ -12,7 +12,6 @@ export const listenRabbitTopic = async (params: any, callback: Function) => {
     .durable()
     .retryTimeout(60000)
     .listen<string>(async msg => {
-      console.log(msg);
       return callback(msg);
     });
 };
