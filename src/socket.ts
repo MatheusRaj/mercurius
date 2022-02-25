@@ -1,4 +1,4 @@
-import { Socket } from 'socket.io';
+export * from 'socket.io';
 import { ISend } from './interfaces/ISend';
 import { io } from './io';
 
@@ -10,4 +10,4 @@ export const listen = (event: string, callback: Function) => {
   });
 };
 
-export default { listen, Socket };
+export default { listen };
