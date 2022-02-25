@@ -10,10 +10,4 @@ export const listen = (event: string, callback: Function) => {
   });
 };
 
-export const dispatch = (socket: Socket, event: string, callback: Function) => {
-  return socket.emit(event, (payload: ISend) => {
-    callback(io, payload);
-  });
-};
-
-export default { listen, dispatch };
+export default { listen, Socket };
