@@ -1,9 +1,8 @@
 import { Connection } from '@eduzz/rabbit';
 import { getRabbitConnection } from '../config';
 
-export const rabbitConnection: Connection = getRabbitConnection();
-
 export const listenRabbitTopic = async (params: any, callback: Function) => {
+  const rabbitConnection: Connection = getRabbitConnection();
   const { queue, topic } = params;
 
   await rabbitConnection
@@ -17,9 +16,10 @@ export const listenRabbitTopic = async (params: any, callback: Function) => {
 };
 
 export const publishRabbitMessage = async (topic: string, payload: any) => {
+  const rabbitConnection: Connection = getRabbitConnection();
   const publisher = rabbitConnection.topic(topic).persistent();
 
   publisher.send(payload);
 };
 
-export default { listenRabbitTopic, publishRabbitMessage, rabbitConnection };
+export default { listenRabbitTopic, publishRabbitMessage };
