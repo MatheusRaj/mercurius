@@ -8,9 +8,9 @@ export const listenRabbitTopic = async (params: any, callback: Function) => {
   await rabbitConnection
     .queue(queue)
     .topic(topic)
-    .durable()
     .retryTimeout(60000)
     .listen<string>(async msg => {
+      console.log('listening to: ', topic);
       return callback(msg);
     });
 };
