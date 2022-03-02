@@ -13,6 +13,8 @@ export const listenRabbitTopic = async (params: any, callback: Function) => {
       console.log('listening to: ', topic);
       return callback(msg);
     });
+
+  return true;
 };
 
 export const publishRabbitMessage = async (topic: string, payload: any) => {
