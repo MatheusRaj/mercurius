@@ -17,11 +17,10 @@ export const listenRabbitTopic = async (params: any, callback: Function) => {
 
 export const publishRabbitMessage = async (topic: string, payload: any) => {
   const rabbitConnection: Connection = getRabbitConnection();
-  console.log('topic: ', topic);
+
   const publisher = rabbitConnection.topic(topic).persistent();
 
-  console.log('payload: ', payload);
-  publisher.send(payload);
+  publisher.send({ payload });
 };
 
 export default { listenRabbitTopic, publishRabbitMessage };
