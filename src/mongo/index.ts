@@ -19,8 +19,7 @@ export const mongoConnect = ({ mongoDatabase, mongoUrl }) => {
       autoIndex: true,
       dbName: mongoDatabase,
       useNewUrlParser: true,
-      useUnifiedTopology: true,
-      poolSize: 3
+      useUnifiedTopology: true
     };
 
     mongoose.connect(mongoUrl, options, err => (err ? reject(err) : resolve()));
