@@ -1,14 +1,15 @@
 import mongoose from 'mongoose';
-import { Document, Model, model, Schema } from 'mongoose';
+import { Schema } from 'mongoose';
 
-export const defineSchema = (schemaType: any): Schema => {
-  return new Schema(schemaType);
-};
+export * from 'mongoose';
 
-export const createSchema = (schema: Schema, schemaName: string, T: any) => {
-  const NewSchema: Model<ReturnType<typeof T>> = model<ReturnType<typeof T>>(schemaName, schema);
+export const persistMessage = (payload: any) => {
+  const ConversationSchema = new Schema({ room: String, message: Object });
 
-  return NewSchema;
+  const Conversation = mongoose.model('Conversation', ConversationSchema);
+
+  const conversation = new Conversation(payload);
+  conversation.save().then((res: any) => console.log(res));
 };
 
 export const mongoConnect = ({ mongoDatabase, mongoUrl }) => {
@@ -32,4 +33,4 @@ export const mongoConnect = ({ mongoDatabase, mongoUrl }) => {
   });
 };
 
-export default { defineSchema, mongoConnect, Document };
+export default { persistMessage, mongoConnect };
