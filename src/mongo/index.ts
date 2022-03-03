@@ -12,6 +12,16 @@ export const persistMessage = (payload: any) => {
   conversation.save().then((res: any) => console.log(res));
 };
 
+export const listMessages = (payload: any, callback: Function) => {
+  const { room, message } = payload;
+
+  const ConversationSchema = new Schema({ room: String, message: Object });
+
+  const Conversation = mongoose.model('Conversation', ConversationSchema);
+
+  Conversation.find({ room: { $eq: room }, message: { from: { $ne: message.from } } }, callback);
+};
+
 export const mongoConnect = ({ mongoDatabase, mongoUrl }) => {
   return new Promise<void>((resolve, reject) => {
     const options = {
@@ -32,4 +42,4 @@ export const mongoConnect = ({ mongoDatabase, mongoUrl }) => {
   });
 };
 
-export default { persistMessage, mongoConnect };
+export default { persistMessage, listMessages, mongoConnect };
