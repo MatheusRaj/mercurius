@@ -12,9 +12,9 @@ export const persistMessage = (payload: any) => {
 };
 
 export const listMessages = (payload: any, callback: Function) => {
-  const { room, message } = payload;
+  const { room, from } = payload;
 
-  Conversation.find({ room: { $eq: room }, message: { from: { $ne: message.from } } }, callback);
+  Conversation.find({ room: { $eq: room }, message: { from: { $ne: from } } }, callback);
 };
 
 export const mongoConnect = ({ mongoDatabase, mongoUrl }) => {
