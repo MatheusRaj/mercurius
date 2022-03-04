@@ -4,6 +4,11 @@ import { IConversation } from '../interfaces/IConversation';
 
 export * from 'mongoose';
 
+interface IMongoConnect {
+  mongoDatabase: string;
+  mongoUrl: string;
+}
+
 const ConversationSchema = new Schema({ room: String, message: Object });
 const Conversation = mongoose.model('Conversation', ConversationSchema);
 
@@ -20,7 +25,7 @@ export const listMessages = async (payload: IConversation) => {
   return messages;
 };
 
-export const mongoConnect = ({ mongoDatabase, mongoUrl }) => {
+export const mongoConnect = ({ mongoDatabase, mongoUrl }: IMongoConnect) => {
   return new Promise<void>((resolve, reject) => {
     const options = {
       keepAlive: true,

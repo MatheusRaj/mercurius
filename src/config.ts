@@ -5,10 +5,25 @@ import { BehaviorSubject } from 'rxjs';
 import { createAdapter } from '@socket.io/redis-adapter';
 import { createClient } from 'redis';
 import * as http from 'http';
-import { Server } from 'socket.io';
-import cors from 'cors';
-import express from 'express';
+import { Server, ServerOptions } from 'socket.io';
+import cors, { CorsOptions, CorsOptionsDelegate } from 'cors';
+import express, { Router } from 'express';
 import { router } from './router';
+import { IConnectionOptions } from '@eduzz/rabbit/dist/interfaces/IConnectionOptions';
+
+interface IConfig {
+  sentryKey?: string;
+  rabbitParams?: IConnectionOptions;
+  mongoParams?: {
+    mongoDatabase: string;
+    mongoUrl: string;
+  };
+  port: number;
+  redisUrl: string;
+  corsOptions: CorsOptions | CorsOptionsDelegate;
+  ioOptions: Partial<ServerOptions>;
+  routerOptions: Router;
+}
 
 const rabbitConnection = new BehaviorSubject<Connection>({} as Connection);
 const io = new BehaviorSubject<Server>({} as Server);
@@ -16,14 +31,14 @@ const io = new BehaviorSubject<Server>({} as Server);
 export const getRabbitConnection = () => rabbitConnection.getValue();
 export const getIoConnection = () => io.getValue();
 
-export const config = async (params: any) => {
-  const { sentryKey, rabbitParams, mongoParams, port, redisUrl, corsOptions, ioOptions, routes } = params;
+export const config = async (params: IConfig) => {
+  const { sentryKey, rabbitParams, mongoParams, port, redisUrl, corsOptions, ioOptions, routerOptions } = params;
 
   const app = express();
 
   app.use(cors(corsOptions ? corsOptions : null));
 
-  app.use('/', { router, ...routes });
+  app.use('/', routerOptions ? routerOptions : router);
 
   const httpServer = new http.Server(app);
 
