@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { Schema } from 'mongoose';
-import { IConversation } from '../interfaces/ISend';
+import { IConversation } from '../interfaces/IConversation';
 
 export * from 'mongoose';
 

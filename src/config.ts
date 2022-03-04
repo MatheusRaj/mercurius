@@ -11,8 +11,10 @@ import express from 'express';
 import { router } from './router';
 
 const rabbitConnection = new BehaviorSubject<Connection>({} as Connection);
+const io = new BehaviorSubject<Server>({} as Server);
 
 export const getRabbitConnection = () => rabbitConnection.getValue();
+export const getIoConnection = () => io.getValue();
 
 export const config = async (params: any) => {
   const { sentryKey, rabbitParams, mongoParams, port, redisUrl, corsOptions, ioOptions, routes } = params;
@@ -25,12 +27,14 @@ export const config = async (params: any) => {
 
   const httpServer = new http.Server(app);
 
-  const io = new Server(httpServer, {
-    path: '/',
-    cors: { origin: '*', methods: ['GET', 'POST'] },
-    transports: ['websocket', 'polling'],
-    ...ioOptions
-  });
+  await io.next(
+    new Server(httpServer, {
+      path: '/',
+      cors: { origin: '*', methods: ['GET', 'POST'] },
+      transports: ['websocket', 'polling'],
+      ...ioOptions
+    })
+  );
 
   sentry.init({ dsn: sentryKey });
 
@@ -40,7 +44,10 @@ export const config = async (params: any) => {
 
   const pubClient = createClient({ url: redisUrl });
   const subClient = pubClient.duplicate();
-  io.adapter(createAdapter(pubClient, subClient));
+
+  const engine = getIoConnection();
+
+  engine.adapter(createAdapter(pubClient, subClient));
 
   Promise.all([pubClient.connect(), subClient.connect()]).then(async () => {
     await httpServer.listen({ port });
