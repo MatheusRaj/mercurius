@@ -1,14 +1,15 @@
 export * from 'socket.io';
-import { ISend } from './interfaces/ISend';
-import { io } from './io';
+import { getIoConnection } from '.';
+import { IConversation } from './interfaces/IConversation';
 
 export const listenWebsocket = (event: string, callback: Function) => {
   console.log('listen called', event);
 
+  const io = getIoConnection();
+
   io.on('connection', socket => {
     console.log('connection called');
-    socket.on(event, (payload: ISend) => {
-      console.log(event, ' called');
+    socket.on(event, (payload: IConversation) => {
       callback(socket, payload);
     });
   });
