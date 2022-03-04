@@ -43,15 +43,22 @@ export const config = async (params: IConfig) => {
 
   await mongoConnect(mongoParams);
 
-  const pubClient = createClient({ url: redisUrl });
-  const subClient = pubClient.duplicate();
+  if (redisUrl) {
+    const pubClient = createClient({ url: redisUrl });
+    const subClient = pubClient.duplicate();
 
-  const engine = getIoConnection();
+    const engine = getIoConnection();
 
-  engine.adapter(createAdapter(pubClient, subClient));
+    engine.adapter(createAdapter(pubClient, subClient));
 
-  Promise.all([pubClient.connect(), subClient.connect()]).then(async () => {
-    await httpServer.listen({ port });
-    console.log('Server up with Redis and listening port: ', port);
-  });
+    Promise.all([pubClient.connect(), subClient.connect()]).then(async () => {
+      await httpServer.listen({ port });
+      console.log('Server up with Redis and listening port: ', port);
+    });
+
+    return;
+  }
+
+  await httpServer.listen({ port });
+  console.log('Server up and listening port: ', port);
 };
