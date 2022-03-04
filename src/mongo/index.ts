@@ -14,6 +14,8 @@ export const persistMessage = (payload: any) => {
 export const listMessages = (payload: any, callback: Function) => {
   const { room } = payload;
 
+  console.log('Pesquisando room: ', room);
+
   Conversation.find({ room: { $eq: room } }, callback);
 };
 
