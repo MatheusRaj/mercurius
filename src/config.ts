@@ -18,11 +18,11 @@ interface IConfig {
     mongoDatabase: string;
     mongoUrl: string;
   };
-  port: number;
-  redisUrl: string;
-  corsOptions: CorsOptions | CorsOptionsDelegate;
-  ioOptions: Partial<ServerOptions>;
-  routerOptions: Router;
+  port?: number;
+  redisUrl?: string;
+  corsOptions?: CorsOptions | CorsOptionsDelegate;
+  ioOptions?: Partial<ServerOptions>;
+  routerOptions?: Router;
 }
 
 const rabbitConnection = new BehaviorSubject<Connection>({} as Connection);
