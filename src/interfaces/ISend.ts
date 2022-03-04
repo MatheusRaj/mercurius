@@ -1,11 +1,7 @@
-import { IUser } from './IUser';
-
-export interface ISend {
-  from: IUser;
+export interface IConversation {
   room: unknown;
-  data: unknown;
-  persistData?: {
-    connection: string;
-    topic: string;
+  message: {
+    from: string;
+    content: unknown;
   };
 }

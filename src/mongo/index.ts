@@ -1,20 +1,19 @@
 import mongoose from 'mongoose';
 import { Schema } from 'mongoose';
+import { IConversation } from '../interfaces/ISend';
 
 export * from 'mongoose';
 
 const ConversationSchema = new Schema({ room: String, message: Object });
 const Conversation = mongoose.model('Conversation', ConversationSchema);
 
-export const persistMessage = (payload: any) => {
+export const persistMessage = (payload: IConversation) => {
   const conversation = new Conversation(payload);
-  conversation.save().then((res: any) => console.log(res));
+  conversation.save();
 };
 
-export const listMessages = async (payload: any) => {
+export const listMessages = async (payload: IConversation) => {
   const { room } = payload;
-
-  console.log('Pesquisando room: ', room);
 
   const messages = await Conversation.find({ room }).exec();
 
