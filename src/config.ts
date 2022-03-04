@@ -25,6 +25,6 @@ export const config = async (params: any) => {
 
   Promise.all([pubClient.connect(), subClient.connect()]).then(async () => {
     await httpServer.listen({ port });
-    console.log('Server up and listening port: ', port);
+    console.log('Server up with Redis and listening port: ', port);
   });
 };
