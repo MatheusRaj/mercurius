@@ -11,12 +11,14 @@ export const persistMessage = (payload: any) => {
   conversation.save().then((res: any) => console.log(res));
 };
 
-export const listMessages = (payload: any, callback: mongoose.Callback<any[]>) => {
+export const listMessages = async (payload: any) => {
   const { room } = payload;
 
   console.log('Pesquisando room: ', room);
 
-  Conversation.find({ room }, callback);
+  const messages = await Conversation.find({ room }).exec();
+
+  return messages;
 };
 
 export const mongoConnect = ({ mongoDatabase, mongoUrl }) => {
