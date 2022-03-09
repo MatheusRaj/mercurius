@@ -1,6 +1,5 @@
 export * from 'socket.io';
 import { getIoConnection } from '.';
-import { IConversation } from './interfaces/IConversation';
 
 export const listenWebsocket = (event: string, callback: Function) => {
   console.log('listen called', event);
@@ -9,7 +8,7 @@ export const listenWebsocket = (event: string, callback: Function) => {
 
   io.on('connection', socket => {
     console.log('connection called');
-    socket.on(event, (payload: IConversation) => {
+    socket.on(event, (payload: any) => {
       callback(socket, payload);
     });
   });

@@ -1,6 +1,5 @@
-import mongoose from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { Schema } from 'mongoose';
-import { IConversation } from '../interfaces/IConversation';
 
 export * from 'mongoose';
 
@@ -9,18 +8,21 @@ interface IMongoConnect {
   mongoUrl: string;
 }
 
-const ConversationSchema = new Schema({ room: String, message: Object });
-const Conversation = mongoose.model('Conversation', ConversationSchema);
+const GenericSchema = new Schema();
 
-export const persistMessage = (payload: IConversation) => {
-  const conversation = new Conversation(payload);
-  conversation.save();
+export const getModel = (name: string) => {
+  const GenericModel = mongoose.model(name, GenericSchema);
+
+  return GenericModel;
 };
 
-export const listMessages = async (payload: IConversation) => {
-  const { room } = payload;
+export const persistMessage = (payload: any, model: Model<any>) => {
+  const instance = new model(payload);
+  instance.save();
+};
 
-  const messages = await Conversation.find({ room }).exec();
+export const listMessages = async (payload: any, model: Model<any>) => {
+  const messages = await model.find(payload).exec();
 
   return messages;
 };
@@ -45,4 +47,4 @@ export const mongoConnect = ({ mongoDatabase, mongoUrl }: IMongoConnect) => {
   });
 };
 
-export default { persistMessage, listMessages, mongoConnect };
+export default { persistMessage, listMessages, mongoConnect, getModel };
