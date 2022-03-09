@@ -1,5 +1,4 @@
 import mongoose, { Model } from 'mongoose';
-import { Schema } from 'mongoose';
 
 export * from 'mongoose';
 
@@ -7,16 +6,6 @@ interface IMongoConnect {
   mongoDatabase: string;
   mongoUrl: string;
 }
-
-const GenericSchema = new Schema();
-
-export const getModel = (name: string) => {
-  const GenericModel = mongoose.model(name, GenericSchema);
-
-  console.log(GenericModel);
-
-  return GenericModel;
-};
 
 export const persistMessage = (payload: any, model: Model<any>) => {
   console.log(model);
@@ -54,4 +43,4 @@ export const mongoConnect = ({ mongoDatabase, mongoUrl }: IMongoConnect) => {
   });
 };
 
-export default { persistMessage, listMessages, mongoConnect, getModel };
+export default { persistMessage, listMessages, mongoConnect };
