@@ -13,11 +13,18 @@ const GenericSchema = new Schema();
 export const getModel = (name: string) => {
   const GenericModel = mongoose.model(name, GenericSchema);
 
+  console.log(GenericModel);
+
   return GenericModel;
 };
 
 export const persistMessage = (payload: any, model: Model<any>) => {
+  console.log(model);
+
   const instance = new model(payload);
+
+  console.log('Instance created: ', instance);
+
   instance.save();
 };
 
