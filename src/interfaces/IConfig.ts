@@ -10,7 +10,7 @@ export interface IConfig {
     mongoDatabase: string;
     mongoUrl: string;
   };
-  port?: number;
+  port?: number | string;
   redisUrl?: string;
   corsOptions?: CorsOptions | CorsOptionsDelegate;
   ioOptions?: Partial<ServerOptions>;
