@@ -10,7 +10,6 @@ export const listenRabbitTopic = async (params: any, callback: Function) => {
     .topic(topic)
     .retryTimeout(60000)
     .listen<string>(async msg => {
-      console.log('listening to: ', topic);
       return callback(msg);
     });
 

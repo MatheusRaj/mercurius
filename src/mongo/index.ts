@@ -8,11 +8,7 @@ interface IMongoConnect {
 }
 
 export const persistMessage = (payload: any, model: Model<any>) => {
-  console.log(model);
-
   const instance = new model(payload);
-
-  console.log('Instance created: ', instance);
 
   instance.save();
 };
