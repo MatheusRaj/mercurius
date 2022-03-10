@@ -7,13 +7,15 @@ interface IMongoConnect {
   mongoUrl: string;
 }
 
-export const persistMessage = (payload: any, model: Model<any>) => {
+export const persistMessage = async (payload: any, model: Model<any>): Promise<boolean> => {
   const instance = new model(payload);
 
-  instance.save();
+  await instance.save();
+
+  return true;
 };
 
-export const listMessages = async (payload: any, model: Model<any>) => {
+export const listMessages = async (payload: any, model: Model<any>): Promise<any> => {
   const messages = await model.find(payload).exec();
 
   return messages;

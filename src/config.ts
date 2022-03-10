@@ -37,11 +37,11 @@ export const config = async (params: IConfig) => {
     })
   );
 
-  sentry.init({ dsn: sentryKey });
+  sentryKey && sentry.init({ dsn: sentryKey });
 
-  rabbitConnection.next(new Connection(rabbitParams));
+  rabbitParams && rabbitConnection.next(new Connection(rabbitParams));
 
-  await mongoConnect(mongoParams);
+  mongoParams && (await mongoConnect(mongoParams));
 
   if (redisUrl) {
     const pubClient = createClient({ url: redisUrl });
