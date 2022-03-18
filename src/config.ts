@@ -18,13 +18,13 @@ export const getRabbitConnection = () => rabbitConnection.getValue();
 export const getIoConnection = () => io.getValue();
 
 export const config = async (params: IConfig) => {
-  const { sentryKey, rabbitParams, mongoParams, port, redisUrl, corsOptions, ioOptions, routerOptions } = params;
+  const { sentryKey, rabbitParams, mongoParams, port, redisUrl, corsOptions, ioOptions } = params;
 
   const app = express();
 
   app.use(cors(corsOptions ? corsOptions : null));
 
-  app.use('/', routerOptions ? routerOptions : router);
+  app.use('/', router);
 
   const httpServer = new http.Server(app);
 
