@@ -12,10 +12,10 @@ import { router } from './router';
 import { IConfig } from './interfaces/IConfig';
 
 const rabbitConnection = new BehaviorSubject<Connection>({} as Connection);
-const io = new BehaviorSubject<Server>({} as Server);
+const ioConnection = new BehaviorSubject<Server>({} as Server);
 
 export const getRabbitConnection = () => rabbitConnection.getValue();
-export const getIoConnection = () => io.getValue();
+export const getIoConnection = () => ioConnection.getValue();
 
 export const config = async (params: IConfig) => {
   const { sentryKey, rabbitParams, mongoParams, port, redisUrl, corsOptions, ioOptions } = params;
@@ -30,7 +30,7 @@ export const config = async (params: IConfig) => {
 
   const httpServer = new http.Server(app);
 
-  await io.next(
+  await ioConnection.next(
     new Server(httpServer, {
       path: '/',
       cors: { origin: '*', methods: ['GET', 'POST'] },
@@ -38,6 +38,10 @@ export const config = async (params: IConfig) => {
       ...ioOptions
     })
   );
+
+  const io = getIoConnection();
+
+  io.attach(httpServer);
 
   sentryKey && sentry.init({ dsn: sentryKey });
 
