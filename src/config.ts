@@ -24,6 +24,8 @@ export const config = async (params: IConfig) => {
 
   app.use(cors(corsOptions ? corsOptions : null));
 
+  console.log(router);
+
   app.use('/', router);
 
   const httpServer = new http.Server(app);
