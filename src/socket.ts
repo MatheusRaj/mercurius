@@ -4,12 +4,12 @@ import { getIoConnection } from '.';
 
 export * from 'socket.io';
 
-export const listenWebsocket = (event: string, callback: (socket: Socket, payload: any) => void) => {
+export const listenWebsocket = (event: string, callback: (socket: Socket, ...payload: any) => void) => {
   const io = getIoConnection();
 
   io.on('connection', socket => {
     socket.on(event, payload => {
-      callback(socket, payload);
+      callback(socket, ...payload);
     });
   });
 };
