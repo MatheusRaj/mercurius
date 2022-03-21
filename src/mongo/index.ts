@@ -16,9 +16,7 @@ export const persistMessage = async (payload: any, model: Model<any>): Promise<b
 };
 
 export const listMessages = async (payload: any, model: Model<any>): Promise<any> => {
-  const messages = await model.find(payload).exec();
-
-  return messages;
+  return await model.find(payload).exec();
 };
 
 export const mongoConnect = ({ mongoDatabase, mongoUrl }: IMongoConnect) => {

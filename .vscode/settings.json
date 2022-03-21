@@ -1,7 +1,10 @@
 {
-  "editor.formatOnPaste": true,
-  "editor.formatOnSave": true,
-  "editor.formatOnType": true,
+  "editor.formatOnPaste": false,
+  "editor.formatOnSave": false,
+  "editor.formatOnType": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
   "typescriptHero.imports.organizeOnSave": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescriptHero.imports.ignoredFromRemoval": [

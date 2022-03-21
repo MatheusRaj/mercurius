@@ -1,11 +1,14 @@
-export * from 'socket.io';
+import { Socket } from 'socket.io';
+
 import { getIoConnection } from '.';
 
-export const listenWebsocket = (event: string, callback: Function) => {
+export * from 'socket.io';
+
+export const listenWebsocket = (event: string, callback: (socket: Socket, payload: any) => void) => {
   const io = getIoConnection();
 
   io.on('connection', socket => {
-    socket.on(event, (payload: any) => {
+    socket.on(event, payload => {
       callback(socket, payload);
     });
   });

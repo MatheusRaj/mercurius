@@ -1,4 +1,5 @@
 import { Connection } from '@eduzz/rabbit';
+
 import { getRabbitConnection } from '../config';
 
 export const listenRabbitTopic = async (params: any, callback: Function) => {

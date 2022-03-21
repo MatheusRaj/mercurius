@@ -1,15 +1,13 @@
 import * as sentry from '@sentry/node';
-import { Connection } from '@eduzz/rabbit';
-import { mongoConnect } from './mongo';
-import { BehaviorSubject } from 'rxjs';
 import { createAdapter } from '@socket.io/redis-adapter';
 import { createClient } from 'redis';
-import * as http from 'http';
+import { BehaviorSubject } from 'rxjs';
 import { Server } from 'socket.io';
-import cors from 'cors';
-import express from 'express';
-import { router } from './router';
+
+import { Connection } from '@eduzz/rabbit';
+
 import { IConfig } from './interfaces/IConfig';
+import { mongoConnect } from './mongo';
 
 const rabbitConnection = new BehaviorSubject<Connection>({} as Connection);
 const ioConnection = new BehaviorSubject<Server>({} as Server);
@@ -17,18 +15,8 @@ const ioConnection = new BehaviorSubject<Server>({} as Server);
 export const getRabbitConnection = () => rabbitConnection.getValue();
 export const getIoConnection = () => ioConnection.getValue();
 
-export const config = async (params: IConfig) => {
-  const { sentryKey, rabbitParams, mongoParams, port, redisUrl, corsOptions, ioOptions } = params;
-
-  const app = express();
-
-  app.use(cors(corsOptions ? corsOptions : null));
-
-  console.log(router);
-
-  app.use('/', router);
-
-  const httpServer = new http.Server(app);
+export const config = async (params: IConfig): Promise<void> => {
+  const { sentryKey, rabbitParams, mongoParams, redisUrl, ioOptions, httpServer } = params;
 
   await ioConnection.next(
     new Server(httpServer, {
@@ -38,10 +26,6 @@ export const config = async (params: IConfig) => {
       ...ioOptions
     })
   );
-
-  const io = getIoConnection();
-
-  io.attach(httpServer);
 
   sentryKey && sentry.init({ dsn: sentryKey });
 
@@ -57,14 +41,6 @@ export const config = async (params: IConfig) => {
 
     engine.adapter(createAdapter(pubClient, subClient));
 
-    Promise.all([pubClient.connect(), subClient.connect()]).then(async () => {
-      await httpServer.listen({ port });
-      console.log('Server up with Redis and listening port: ', port);
-    });
-
-    return;
+    await Promise.all([pubClient.connect(), subClient.connect()]);
   }
-
-  await httpServer.listen({ port });
-  console.log('Server up and listening port: ', port);
 };
