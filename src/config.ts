@@ -20,7 +20,6 @@ export const config = async (params: IConfig): Promise<void> => {
 
   await ioConnection.next(
     new Server(httpServer, {
-      path: '/',
       cors: { origin: '*', methods: ['GET', 'POST'] },
       transports: ['websocket', 'polling'],
       ...ioOptions
