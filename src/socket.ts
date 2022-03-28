@@ -9,7 +9,7 @@ export const listenWebsocket = (event: string, callback: (socket: Socket, ...pay
 
   io.on('connection', socket => {
     socket.on(event, payload => {
-      callback(socket, ...payload);
+      callback(socket, payload);
     });
   });
 };
